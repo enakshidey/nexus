@@ -16,12 +16,15 @@
 
 ##### GEOMETRY #####
 /Geometry/Next100/elfield false
-/Geometry/Next100/max_step_size 1. mm
+/Geometry/Next100/max_step_size 0.1 mm
+/Geometry/Next100/pressure 10 bar
+
 
 ##### GENERATOR #####
-/Generator/IonGenerator/atomic_number 83
-/Generator/IonGenerator/mass_number 214
-/Generator/IonGenerator/region TP_COPPER_PLATE
+/Generator/SingleParticle/particle e-
+/Generator/SingleParticle/region CENTER
+/Generator/SingleParticle/min_energy 2 MeV
+/Generator/SingleParticle/max_energy 2 MeV
 
 ##### ACTIONS #####
 /Actions/DefaultEventAction/min_energy 0.6 MeV

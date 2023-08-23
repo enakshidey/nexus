@@ -11,7 +11,12 @@
 # sbatch --array=1-10 <this script name>.sh
 # The array is the range of jobs to run e.g. this runs 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 # Copy the files over
+# Create the directory
+cd /media/argon/NVME1/Enakshi/IC_job/
+mkdir -p $JOBNAME/$ENERGY/$STEP_LENGTH/jobid_"${SLURM_ARRAY_TASK_ID}"
+cd $JOBNAME/$ENERGY/$STEP_LENGTH/jobid_"${SLURM_ARRAY_TASK_ID}"
 
+# ---
 cp /home/argon/Projects/Enakshi/nexus/macros/NEXT100.config.mac .
 cp /home/argon/Projects/Enakshi/nexus/macros/NEXT100.init.mac .
 
@@ -49,7 +54,7 @@ cd $JOBNAME/$ENERGY/$STEP_LENGTH/jobid_"${SLURM_ARRAY_TASK_ID}"
 
 # Setup nexus and run
 echo "Setting Up NEXUS" 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
-source ~/projects/Enakshi/nexus/setup_cluster.sh
+source ~/Projects/Enakshi/nexus/setup_cluster.sh
 
 # Also setup IC
 #source ~/home/argon/Software/IC/setup_IC.sh

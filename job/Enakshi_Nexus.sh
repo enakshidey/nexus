@@ -46,7 +46,6 @@ sed -i "s#.*pressure.*#/Geometry/Next100/pressure ${PRESSURE} bar#" ${CONFIG}
 sed -i "s#.*min_energy.*#//Generator/SingleParticle/min_energy ${ENERGY} MeV#" ${CONFIG}
 sed -i "s#.*max_energy.*#//Generator/SingleParticle/max_energy ${ENERGY} MeV#" ${CONFIG}
 sed -i "s#.*config.mac.*#/nexus/RegisterMacro NEXT100.config.mac#" ${INIT}
-sed -i "s#.*files_in.*#/files_in    = "NEXT100_${N_EVENTS}k_${ENERGY}MeV_${STEP_LENGTH}mm_${PRESSURE}bar.next.h5"#" detsim.conf
 
 # ---
 
@@ -56,7 +55,7 @@ echo "Setting Up NEXUS" 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 source ~/Projects/Enakshi/nexus/setup_cluster.sh
 
 # Also setup IC
-#source ~/home/argon/Software/IC/setup_IC.sh
+source /home/argon/Software/IC/setup_IC.sh
 
 
 for i in $(eval echo "{1..${FILES_PER_JOB}}"); do
@@ -71,14 +70,15 @@ for i in $(eval echo "{1..${FILES_PER_JOB}}"); do
 	# NEXUS
 	echo "Running NEXUS" 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	nexus -n $N_EVENTS ${INIT} 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
-	mv NEXT100.next.h5 NEXT100_${N_EVENTS}k_${ENERGY}MeV_${STEP_LENGTH}mm_${PRESSURE}bar.next.h5
-
+	
 	# IC
 	echo "Running IC Detsim"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	city detsim detsim.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
+
+	mv NEXT100.next.h5 NEXT100_${N_EVENTS}k_${ENERGY}MeV_${STEP_LENGTH}mm_${PRESSURE}bar.next.h5
 	
 	echo "Running IC Hypathia"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
-	city detsim hypathia.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt	
+	city hypathia hypathia.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt	
 	
 	echo "Running IC Penthesilea"     2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	city penthesilea penthesilea.conf 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
@@ -87,10 +87,10 @@ for i in $(eval echo "{1..${FILES_PER_JOB}}"); do
 	city esmeralda esmeralda.conf 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	
 	echo "Running IC Beersheba"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
-	city detsim Beersheba.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
+	city beersheba beersheba.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	
 	echo "Running IC Isaura"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
-	city detsim isaura.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
+	city isaura isaura.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	
 	
 # ​

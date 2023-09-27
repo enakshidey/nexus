@@ -75,7 +75,7 @@ for i in $(eval echo "{1..${FILES_PER_JOB}}"); do
 	echo "Running IC Detsim"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	city detsim detsim.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 
-	mv NEXT100.next.h5 NEXT100_${N_EVENTS}k_${ENERGY}MeV_${STEP_LENGTH}mm_${PRESSURE}bar.next.h5
+	mv Next100.next.h5 NEXT100_${N_EVENTS}k_${ENERGY}MeV_${STEP_LENGTH}mm_${PRESSURE}bar.next.h5
 	
 	echo "Running IC Hypathia"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	city hypathia hypathia.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt	

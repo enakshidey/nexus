@@ -92,6 +92,10 @@ for i in $(eval echo "{1..${FILES_PER_JOB}}"); do
 	echo "Running IC Isaura"  2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	city isaura isaura.conf   2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	
+	# Rename the files so they are unique
+ 94   mv Next100.next.h5 NEXT100_${N_EVENTS}k_${ENERGY}MeV_${STEP_LENGTH}mm_${PRESSURE}bar_${SLURM_ARRAY_TASK_ID}.next.h5
+ 95   mv esmeralda_out.h5 esmeralda_out_${SLURM_ARRAY_TASK_ID}.h5
+ 96   mv isaura_out.h5 isaura_out_${SLURM_ARRAY_TASK_ID}.h5
 	
 # ​
 	# Rename files

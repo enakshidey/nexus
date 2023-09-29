@@ -18,7 +18,7 @@
 /Geometry/Next100/elfield false
 /Geometry/Next100/max_step_size 0.1 mm
 /Geometry/Next100/pressure 15 bar
-/Geometry/Next100/gas enrichedXe
+/Geometry/Next100/gas depletedXe
 
 
 ##### GENERATOR #####
@@ -41,3 +41,4 @@
 /nexus/persistency/outputFile Next100_2MeV_0.1mm_2k.next
 ## eventType options: bb0nu, bb2nu, background
 /nexus/persistency/eventType background
+/nexus/persistency/start_id {SEED}

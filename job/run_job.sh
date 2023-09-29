@@ -4,7 +4,7 @@
 PRESSURE=15
 GAS=depletedXe
 STEP_LENGTH=0.1
-ENERGY=1.5s
+ENERGY=1.5
 N_EVENTS=25
 
 # Iterate the string array using for loop

@@ -12,7 +12,7 @@ mkdir -p Pressure_${PRESSURE}bar/gas_$GAS/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGT
 cd  Pressure_${PRESSURE}bar/gas_$GAS/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGTH}mm
 
 
-cp ../../../../../../Enakshi_Nexus.sh .
+cp ../../../../../Enakshi_Nexus.sh .
 
 sed -i "s#.*STEP_LENGTH=.*#STEP_LENGTH=${STEP_LENGTH} #" Enakshi_Nexus.sh
 sed -i "s#.*PRESSURE=.*#PRESSURE=${PRESSURE} #" Enakshi_Nexus.sh

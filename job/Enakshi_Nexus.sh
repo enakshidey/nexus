@@ -48,6 +48,7 @@ sed -i "s#.*min_energy.*#//Generator/SingleParticle/min_energy ${ENERGY} MeV#" $
 sed -i "s#.*max_energy.*#//Generator/SingleParticle/max_energy ${ENERGY} MeV#" ${CONFIG}
 sed -i "s#.*config.mac.*#/nexus/RegisterMacro NEXT100.config.mac#" ${INIT}
 sed -i "s#.*gas.*#/Geometry/Next100/gas ${depletedXe} #" ${CONFIG}
+
 # ---
 
 
@@ -63,6 +64,7 @@ for i in $(eval echo "{1..${FILES_PER_JOB}}"); do
 
 	# Replace the seed in the file	
 	SEED=$((${N_EVENTS}*${FILES_PER_JOB}*(${SLURM_ARRAY_TASK_ID} - 1) + ${N_EVENTS}*${i}))
+	sed -i "s#.*start_id.*#/persistency/Next100/start_id ${SEED} #" ${CONFIG}
 	echo "The seed number is: ${SEED}" 2>&1 | tee -a log_nexus_"${SLURM_ARRAY_TASK_ID}".txt
 	sed -i "s#.*random_seed.*#/nexus/random_seed ${SEED}#" ${CONFIG}
 	sed -i "s#.*start_id.*#/nexus/persistency/start_id ${SEED}#" ${CONFIG}

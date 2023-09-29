@@ -5,7 +5,7 @@ PRESSURE=15
 GAS=depletedXe
 STEP_LENGTH=0.1
 ENERGY=1.5s
-N_EVENTS=4
+N_EVENTS=25
 
 # Iterate the string array using for loop
 mkdir -p Pressure_${PRESSURE}bar/gas_$GAS/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGTH}mm
@@ -20,5 +20,4 @@ sed -i "s#.*ENERGY=.*#ENERGY=${ENERGY}#" Enakshi_Nexus.sh
 sed -i "s#.*GAS=.*#GAS=${GAS}#" Enakshi_Nexus.sh 
 sed -i "s#.*N_EVENTS=.*#N_EVENTS=${N_EVENTS} #" Enakshi_Nexus.sh 
 
-#sbatch --array=1-500 Enakshi_Nexus.sh
-cd ..
+sbatch --array=1-40 Enakshi_Nexus.sh

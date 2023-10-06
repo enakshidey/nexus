@@ -41,4 +41,5 @@
 /nexus/persistency/outputFile Next100_2MeV_0.1mm_2k.next
 ## eventType options: bb0nu, bb2nu, background
 /nexus/persistency/eventType background
-/nexus/persistency/start_id {SEED}
+/nexus/random_seed 0
+/nexus/persistency/start_id 0

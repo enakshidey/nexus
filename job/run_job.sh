@@ -2,14 +2,14 @@
 
 # Declare an array of string with type, these are the EL drift vel values to run
 PRESSURE=15
-GAS=depletedXe
+GAS=enrichedXe
 STEP_LENGTH=0.1
-ENERGY=1.5
-N_EVENTS=25
+ENERGY=2
+N_EVENTS=20
 
 # Iterate the string array using for loop
-mkdir -p Pressure_${PRESSURE}bar/gas_$GAS/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGTH}mm
-cd  Pressure_${PRESSURE}bar/gas_$GAS/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGTH}mm
+mkdir -p Pressure_${PRESSURE}bar/gas_${GAS}/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGTH}mm
+cd  Pressure_${PRESSURE}bar/gas_${GAS}/${N_EVENTS}k/${ENERGY}MeV/${STEP_LENGTH}mm
 
 
 cp ../../../../../Enakshi_Nexus.sh .

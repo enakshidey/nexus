@@ -26,21 +26,22 @@ namespace materials {
   // Function to calculate gas density based on isotopic composition
   G4double CalculateGasDensityFromIsotopicComposition(G4double pressure, G4double temperature, const std::vector<std::pair<int, double>>& isotopicComposition) {
     const double R = 8.314; // Ideal gas constant in J/(mol·K)
-    double averageMolarMass = 0.0; // in g/mol
+    double average_molar_mass = 0.0; // in g/mol
 
     for (const auto& iso : isotopicComposition) {
-      int massNumber = iso.first;
-      double percentage = iso.second; 
-      double molarMass = XenonMassPerMole(massNumber); // This function needs to provide the molar mass for each isotope
-      averageMolarMass += molarMass * percentage;
+      int mass_number = iso.first;
+      double percentage = iso.second/100; 
+      double molar_mass = XenonMassPerMole(mass_number)/(g/mole); 
+      average_molar_mass += molar_mass * percentage;
     }
 
     // Convert average molar mass to kg/mol for the density calculation
-    averageMolarMass /= 1000.0;
+    average_molar_mass /= 1000.0;
 
     // Calculate density using the ideal gas law: ρ = PM / RT
-    G4double density = (pressure * averageMolarMass) / (R * temperature); // Result in kg/m^3
-    return density;
+    G4double density = ((pressure/hep_pascal * average_molar_mass) / (R * temperature)); // Result in kg/m^3
+    return density*kg/(m*m*m);
+    
   }
 
   G4Material* GXe(G4double pressure, G4double temperature) {
@@ -61,14 +62,14 @@ namespace materials {
 
     return mat;
   }
-
+  
   G4Material* GXeEnriched(G4double pressure, G4double temperature) {
     std::vector<std::pair<int, double>> isotopicComposition = {
       {129, 0.0656392}, {130, 0.0656392}, {131, 0.234361},
       {132, 0.708251}, {134, 8.6645}, {136, 90.2616}
     };
 
-    G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure * 1e5, temperature, isotopicComposition);
+    G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure , temperature, isotopicComposition);
     G4Material* mat = GXeEnriched_bydensity(gas_density, temperature, pressure);
     return mat;
   }
@@ -115,7 +116,7 @@ namespace materials {
       {129, 27.29}, {131, 27.07}, {132, 28.31}, {134, 8.61}, {136, 2.55}
     };
 
-    G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure * 1e5, temperature, isotopicComposition);
+    G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);
     G4Material* mat = GXeDepleted_bydensity(gas_density, temperature, pressure);
     return mat;
   }
@@ -212,7 +213,7 @@ namespace materials {
       {130, 4.071}, {131, 21.2324}, {132, 26.9086}, {134, 10.4357}, {136, 8.8573}
     };
 
-    G4double GXeNatural_density = CalculateGasDensityFromIsotopicComposition(pressure/bar * 1e5, temperature, isotopicComposition);
+    G4double GXeNatural_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);
 
     if (mat == 0) {
 
@@ -263,7 +264,7 @@ namespace materials {
       {132, 0.708251}, {134, 8.6645}, {136, 90.2616}
     };
 
-    G4double GXeEnriched_density = CalculateGasDensityFromIsotopicComposition(pressure * 1e5, temperature, isotopicComposition);
+    G4double GXeEnriched_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);
 
     G4Material* mat = G4Material::GetMaterial(name, false);
 

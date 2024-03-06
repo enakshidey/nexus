@@ -23,7 +23,7 @@ using namespace CLHEP;
 
 namespace materials {
 
-  // Function to calculate gas density based on isotopic composition
+  // Function to calculate gas density based on Xe isotopic composition
   G4double CalculateGasDensityFromIsotopicComposition(G4double pressure, G4double temperature, const std::vector<std::pair<int, double>>& isotopicComposition) {
     const double R = 8.314; // Ideal gas constant in J/(mol·K)
     double average_molar_mass = 0.0; // in g/mol

@@ -17,10 +17,6 @@
 
 #include <vector>
 #include <utility> 
-#include <cmath>
-#include <complex>
-#include <algorithm> 
-#include <iostream>
 
 using namespace nexus;
 using namespace CLHEP;
@@ -56,13 +52,9 @@ namespace materials {
             average_molar_mass += molar_mass * percentage;
         }
 
-        // Convert average molar mass to kg/mol for the density calculation
         average_molar_mass /= 1000.0;
-        std::cout << "average_molar_mass " << average_molar_mass << std::endl;
-        // Calculate the molar volume (V_m) using van der Waals equation
         double V = SolveForPhysicalMolarVolume(pressure / hep_pascal, temperature, a, b, R);
 
-        // Convert molar volume V_m to density ρ
         double density = average_molar_mass / V; // Result in kg/m^3
         return density*kg/(m*m*m);
     }
@@ -76,7 +68,6 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure , temperature, isotopicComposition);
     G4Material* mat = GXe_bydensity(gas_density, temperature, pressure);
-    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 
@@ -150,7 +141,6 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);
     G4Material* mat = GXeDepleted_bydensity(gas_density, temperature, pressure);
-    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 

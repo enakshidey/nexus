@@ -17,35 +17,66 @@
 
 #include <vector>
 #include <utility> 
+#include <cmath>
+#include <complex>
+#include <algorithm> 
+#include <iostream>
 
 using namespace nexus;
 using namespace CLHEP;
 
 namespace materials {
 
-  // Function to calculate gas density based on Xe isotopic composition
-  G4double CalculateGasDensityFromIsotopicComposition(G4double pressure, G4double temperature, const std::vector<std::pair<int, double>>& isotopicComposition) {
-    const double R = 8.314; // Ideal gas constant in J/(mol·K)
-    double average_molar_mass = 0.0; // in g/mol
+    G4double SolveForPhysicalMolarVolume(G4double pressure, G4double temperature, double a, double b, double R) {
+        double A = 1;
+        double B = -(b + R * temperature / pressure );
+        double C = a / pressure;
+        double D = -a * b / pressure;
 
-    for (const auto& iso : isotopicComposition) {
-      int mass_number = iso.first;
-      double percentage = iso.second/100; 
-      double molar_mass = XenonMassPerMole(mass_number)/(g/mole); 
-      average_molar_mass += molar_mass * percentage;
+        double Q = (3 * A * C- B * B)/(9*A*A);
+        double P = (9 * A * B * C - 27 * A * A * D - 2 * B * B * B)/(54*A*A*A);
+        double S = std::pow((P + std::sqrt(Q*Q*Q + P*P)),1.0/3.0);
+        double T = std::pow(P - std::sqrt(Q*Q*Q + P*P),1.0/3.0);
+        double V = S+T-B/(3*A);
+        return V;
+        
     }
 
-    // Convert average molar mass to kg/mol for the density calculation
-    average_molar_mass /= 1000.0;
+    // Function to calculate gas density based on Xe isotopic composition
+    G4double CalculateGasDensityFromIsotopicComposition(G4double pressure, G4double temperature, const std::vector<std::pair<int, double>>& isotopicComposition) {
+        const double R = 8.314; // Ideal gas constant in J/(mol·K)
+        const double a = 0.419069963;
+        const double b = 0.0000515442955;
+        double average_molar_mass = 0.0; // in g/mol
 
-    // Calculate density using the ideal gas law: ρ = PM / RT
-    G4double density = ((pressure/hep_pascal * average_molar_mass) / (R * temperature)); // Result in kg/m^3
-    return density*kg/(m*m*m);
-    
-  }
+        for (const auto& iso : isotopicComposition) {
+            int mass_number = iso.first;
+            double percentage = iso.second/100;
+            double molar_mass = XenonMassPerMole(mass_number) / (g / mole);
+            average_molar_mass += molar_mass * percentage;
+        }
+
+        // Convert average molar mass to kg/mol for the density calculation
+        average_molar_mass /= 1000.0;
+        std::cout << "average_molar_mass " << average_molar_mass << std::endl;
+        // Calculate the molar volume (V_m) using van der Waals equation
+        double V = SolveForPhysicalMolarVolume(pressure / hep_pascal, temperature, a, b, R);
+
+        // Convert molar volume V_m to density ρ
+        double density = average_molar_mass / V; // Result in kg/m^3
+        return density*kg/(m*m*m);
+    }
 
   G4Material* GXe(G4double pressure, G4double temperature) {
-    G4Material* mat = GXe_bydensity(GXeDensity(pressure), temperature, pressure);
+    std::vector<std::pair<int, double>> isotopicComposition = {
+      {124, 0.095}, {126, 0.089}, {128, 1.910},
+      {129, 26.401}, {130, 4.071}, {131, 21.232}, 
+      {132, 26.909}, {134,10.436}, {136, 8.857}
+    };
+
+    G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure , temperature, isotopicComposition);
+    G4Material* mat = GXe_bydensity(gas_density, temperature, pressure);
+    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 
@@ -71,6 +102,7 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure , temperature, isotopicComposition);
     G4Material* mat = GXeEnriched_bydensity(gas_density, temperature, pressure);
+    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 
@@ -118,6 +150,7 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);
     G4Material* mat = GXeDepleted_bydensity(gas_density, temperature, pressure);
+    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 

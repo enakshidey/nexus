@@ -56,7 +56,7 @@ namespace materials {
         double V = SolveForPhysicalMolarVolume(pressure / hep_pascal, temperature, a, b, R);
 
         double density = average_molar_mass / V; // Result in kg/m^3
-        return density; //*kg/(m*m*m);
+        return density*kg/(m*m*m);
     }
 
   G4Material* GXe(G4double pressure, G4double temperature) {

@@ -41,8 +41,8 @@ namespace materials {
     // Function to calculate gas density based on Xe isotopic composition
     G4double CalculateGasDensityFromIsotopicComposition(G4double pressure, G4double temperature, const std::vector<std::pair<int, double>>& isotopicComposition) {
         const double R = 8.314; // Ideal gas constant in J/(mol·K)
-        const double a = 0.419069963;
-        const double b = 0.0000515442955;
+        const double a = 0.4192; //0.419069963
+        const double b = 0.00005156; //0.0000515442955;
         double average_molar_mass = 0.0; // in g/mol
 
         for (const auto& iso : isotopicComposition) {
@@ -56,7 +56,7 @@ namespace materials {
         double V = SolveForPhysicalMolarVolume(pressure / hep_pascal, temperature, a, b, R);
 
         double density = average_molar_mass / V; // Result in kg/m^3
-        return density*kg/(m*m*m);
+        return density; //*kg/(m*m*m);
     }
 
   G4Material* GXe(G4double pressure, G4double temperature) {
@@ -68,6 +68,7 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure , temperature, isotopicComposition);
     G4Material* mat = GXe_bydensity(gas_density, temperature, pressure);
+    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 
@@ -93,7 +94,6 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure , temperature, isotopicComposition);
     G4Material* mat = GXeEnriched_bydensity(gas_density, temperature, pressure);
-    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 
@@ -136,7 +136,8 @@ namespace materials {
 
   G4Material* GXeDepleted(G4double pressure, G4double temperature) {
     std::vector<std::pair<int, double>> isotopicComposition = {
-      {129, 27.29}, {131, 27.07}, {132, 28.31}, {134, 8.61}, {136, 2.55}
+      {124, 0.102}, {126, 0.201}, {128, 3.065}, {129, 24.900}, {130, 5.361},
+      {131, 23.280}, {132, 30.666}, {134, 9.822}, {136, 2.602}
     };
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);

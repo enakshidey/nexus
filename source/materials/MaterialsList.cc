@@ -132,6 +132,7 @@ namespace materials {
 
     G4double gas_density = CalculateGasDensityFromIsotopicComposition(pressure, temperature, isotopicComposition);
     G4Material* mat = GXeDepleted_bydensity(gas_density, temperature, pressure);
+    std::cout << "press, temp,den: "<<pressure << ", "<<temperature <<", " <<gas_density << std::endl;
     return mat;
   }
 
@@ -149,13 +150,13 @@ namespace materials {
         kStateGas, temperature, pressure);
 
 
-      G4Element* Xe = new G4Element("GXeDepleted", "Xe", 5);
+      G4Element* Xe = new G4Element("GXeDepleted", "Xe", 9);
       
-      G4Isotope* Xe124 = new G4Isotope("Xe129", 54, 124, XenonMassPerMole(129));
-      G4Isotope* Xe126 = new G4Isotope("Xe129", 54, 126, XenonMassPerMole(129));
-      G4Isotope* Xe128 = new G4Isotope("Xe129", 54, 128, XenonMassPerMole(129));
+      G4Isotope* Xe124 = new G4Isotope("Xe129", 54, 124, XenonMassPerMole(124));
+      G4Isotope* Xe126 = new G4Isotope("Xe129", 54, 126, XenonMassPerMole(126));
+      G4Isotope* Xe128 = new G4Isotope("Xe129", 54, 128, XenonMassPerMole(128));
       G4Isotope* Xe129 = new G4Isotope("Xe129", 54, 129, XenonMassPerMole(129));
-      G4Isotope* Xe130 = new G4Isotope("Xe129", 54, 130, XenonMassPerMole(129));
+      G4Isotope* Xe130 = new G4Isotope("Xe129", 54, 130, XenonMassPerMole(130));
       G4Isotope* Xe131 = new G4Isotope("Xe131", 54, 131, XenonMassPerMole(131));
       G4Isotope* Xe132 = new G4Isotope("Xe132", 54, 132, XenonMassPerMole(132));
       G4Isotope* Xe134 = new G4Isotope("Xe134", 54, 134, XenonMassPerMole(134));

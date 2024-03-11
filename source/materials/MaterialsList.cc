@@ -22,7 +22,7 @@ using namespace nexus;
 using namespace CLHEP;
 
 namespace materials {
-    // Calculation of compressibilty factor from https://next.ific.uv.es/DocDB/0011/001183/001/GasDensity_2021-04-23.pdf
+    // Calculation of Compressibilty factor from https://next.ific.uv.es/DocDB/0011/001183/001/GasDensity_2021-04-23.pdf
     G4double CompressibilityFactor(G4double pressure, G4double temperature, double R) {
         double T_r = temperature/289.733;
         double P_r = pressure/ (58.420*bar);
@@ -30,7 +30,7 @@ namespace materials {
         double z = 1 + B0*(P_r/T_r);
         return z;       
     }
-    
+
     // Function to calculate gas density based on Xe isotopic composition
     G4double CalculateGasDensityFromIsotopicComposition(G4double pressure, G4double temperature, const std::vector<std::pair<int, double>>& isotopicComposition) {
         const double R = 8.314; // Ideal gas constant in J/(mol·K)
@@ -150,8 +150,12 @@ namespace materials {
 
 
       G4Element* Xe = new G4Element("GXeDepleted", "Xe", 5);
-
+      
+      G4Isotope* Xe124 = new G4Isotope("Xe129", 54, 124, XenonMassPerMole(129));
+      G4Isotope* Xe126 = new G4Isotope("Xe129", 54, 126, XenonMassPerMole(129));
+      G4Isotope* Xe128 = new G4Isotope("Xe129", 54, 128, XenonMassPerMole(129));
       G4Isotope* Xe129 = new G4Isotope("Xe129", 54, 129, XenonMassPerMole(129));
+      G4Isotope* Xe130 = new G4Isotope("Xe129", 54, 130, XenonMassPerMole(129));
       G4Isotope* Xe131 = new G4Isotope("Xe131", 54, 131, XenonMassPerMole(131));
       G4Isotope* Xe132 = new G4Isotope("Xe132", 54, 132, XenonMassPerMole(132));
       G4Isotope* Xe134 = new G4Isotope("Xe134", 54, 134, XenonMassPerMole(134));
